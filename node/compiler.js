@@ -525,8 +525,11 @@
                     debug("uploading sketch on board");
                     var pub = function(data){
                             if(data)
-                                if(data.type == 'upload')
+                                if(data.type == 'upload'){
                                     dm.emitEvent(domainName, "console-log", data.message);
+                                    if(data.message.toLowerCase() == "uploaded")
+                                        dm.emitEvent(domainName, "uploaded", outdir)
+                                }
                                 else
                                     dm.emitEvent(domainName, "console-error", data.message);
 
@@ -617,6 +620,15 @@
             [{  name:"cdata",
                 type:"string",
                 description:"building succes"
+            }]
+        );
+
+        domainManager.registerEvent(
+            domainName,
+            "uploaded",
+            [{  name:"udata",
+                type:"string",
+                description:"uploaded succes"
             }]
         );
 
