@@ -180,6 +180,49 @@ extern const uint8_t PROGMEM analog_pin_to_channel_PGM[];
 // these arrays map port names (e.g. port B) to the
 // appropriate addresses for various functions (e.g. reading
 // and writing)
+
+
+// ARDUINO LEONARDO XS
+//
+// D0				PD2					RXD1/INT2
+// D1				PD3					TXD1/INT3
+// D2				PD1		SDA			SDA/INT1
+// D3#				PD0		PWM8/SCL	OC0B/SCL/INT0
+// D4		A6		PD4					ADC8
+// D5#				PC6		???			OC3A/#OC4A
+// D6#		A7		PD7		FastPWM		#OC4D/ADC10
+// D7				PE6					INT6/AIN0
+//
+// D8		A8		PB4					ADC11/PCINT4
+// D9#		A9		PB5		PWM16		OC1A/#OC4B/ADC12/PCINT5
+// D10#				PB0                 RXLED,SS/PCINT0
+// D11#				PB2					MOSI,PCINT2
+// D12				PB3					MISO,PCINT3
+// D13#				PB1					SCK,PCINT1
+//
+// A0		D18		PF7					ADC7
+// A1		D19		PF6					ADC6
+// A2		D20 	PF5					ADC5
+// A3		D21 	PF4					ADC4
+// A4		D22		PF1					ADC1
+// A5		D23 	PF0					ADC0
+//
+// New pins D14..D17 to map SPI port to digital pins only for compatibility
+//
+// MISO		D14		PB3					MISO,PCINT3
+// SCK		D15		PB1					SCK,PCINT1
+// MOSI		D16		PB2					MOSI,PCINT2
+// SS		D17		PB0					RXLED,SS/PCINT0
+//
+// TXLED			PD5
+// RXLED		    PB0
+// HWB				PE2					HWB
+
+// these arrays map port names (e.g. port B) to the
+// appropriate addresses for various functions (e.g. reading
+// and writing)
+
+
 const uint16_t PROGMEM port_to_mode_PGM[] = {
 	NOT_A_PORT,
 	NOT_A_PORT,
@@ -227,10 +270,10 @@ const uint8_t PROGMEM digital_pin_to_port_PGM[] = {
 	PB, // D12 - PB3
 	PB, // D13 - PB1
 	
-	PB,	// D14 - MISO - PB3
-	PB,	// D15 - SCK - PB1 not present in leonardo xs use PB7
-	PB,	// D16 - MOSI - PB2
-	PB,	// D17 - SS - PB0
+	PB,	// D14 - MISO - PB3 not present in leonardo xs, defined only for compatibility
+	PB,	// D15 - SCK - PB1 not present in leonardo xs, defined only for compatibility
+	PB,	// D16 - MOSI - PB2 not present in leonardo xs, defined only for compatibility
+	PB,	// D17 - SS - PB0 not present in leonardo xs, defined only for compatibility
 	
 	PF,	// D18 - A0 - PF7
 	PF, // D19 - A1 - PF6
@@ -248,8 +291,8 @@ const uint8_t PROGMEM digital_pin_to_port_PGM[] = {
 };
 
 const uint8_t PROGMEM digital_pin_to_bit_mask_PGM[] = {
-	_BV(3), // D0 - PD2
-	_BV(2),	// D1 - PD3
+	_BV(2), // D0 - PD2
+	_BV(3),	// D1 - PD3
 	_BV(1), // D2 - PD1
 	_BV(0),	// D3 - PD0
 	_BV(4),	// D4 - PD4
