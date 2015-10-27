@@ -234,28 +234,27 @@ define(function (require, exports, module) {
     }
 
 
+
     var debugSetBpHandler = function($event, data){
         var obj = JSON.parse(data);
-        $('#debug_log').html($('#debug_log').html() + "<span style='color: mediumblue;'>" + obj.message.Raw + "</span><hr>");
-        $('#debug_log').scrollTop($('#debug_log')[0].scrollHeight);
-    }
-    var debugRemBpHandler = function($event, data){
-        var obj = JSON.parse(data);
-        $('#debug_log').html($('#debug_log').html() + "<span style='color: mediumblue;'>" + obj.message.Raw + "</span><hr>");
+        $('#debug_log').html($('#debug_log').html() + "<span style='color: #0000ff;'>" + obj.message.Raw + "</span><hr>");
         $('#debug_log').scrollTop($('#debug_log')[0].scrollHeight);
     }
 
+    var debugRemBpHandler = function($event, data){
+        var obj = JSON.parse(data);
+        $('#debug_log').html($('#debug_log').html() + "<span style='color: #b2b2ff;'>" + obj.message.Raw + "</span><hr>");
+        $('#debug_log').scrollTop($('#debug_log')[0].scrollHeight);
+    }
 
     var debugShowBpHandler = function($event, data){
         var obj = JSON.parse(data);
 
         obj.message.breakpoints.forEach(function(element, index, array) {
-            $('#debug_log').html($('#debug_log').html() + "<span style='color: mediumblue;'>" + "Breakpoint #" + element.Num + " - Row " + element.Row + "\nAddress : " + element.Address + "</span><hr>");
+            $('#debug_log').html($('#debug_log').html() + "<span style='color: #0000cc;'>" + "Breakpoint #" + element.Num + " - Row " + element.Row + "\nAddress : " + element.Address + "</span><hr>");
             $('#debug_log').scrollTop($('#debug_log')[0].scrollHeight);
         })
     }
-
-
 
     var debugNextBpHandler = function($event, data){
         codeMirror.removeLineClass(tmpLine, "background", "line-selected");
@@ -263,10 +262,9 @@ define(function (require, exports, module) {
 
         tmpLine = obj.message.LineNumber -1;
         codeMirror.addLineClass( obj.message.LineNumber-1, "background", "line-selected");
-        $('#debug_log').html($('#debug_log').html() + "<span style='color: mediumblue;'>" + "Breakpoint #" + obj.message.BreakpointNumber + " - Row " + obj.message.LineNumber + " - Code : " + obj.message.Code + "</span><hr>");
+        $('#debug_log').html($('#debug_log').html() + "<span style='color: #6666ff;'>" + "Breakpoint #" + obj.message.BreakpointNumber + " - Row " + obj.message.LineNumber + " - Code : " + obj.message.Code + "</span><hr>");
         $('#debug_log').scrollTop($('#debug_log')[0].scrollHeight);
     }
-
 
     var debugShowVarHandler = function($event, data){
         var obj = JSON.parse(data);
@@ -275,11 +273,12 @@ define(function (require, exports, module) {
             $('#debug_log').html($('#debug_log').html() + element + "</span><br>");
 
             if(index == array.length-1) {
-                $('#debug_log').html($('#debug_log').html() + "<span style='color: mediumblue;'></span><hr>");
+                $('#debug_log').html($('#debug_log').html() + "<span style='color: #000099;'></span><hr>");
                 $('#debug_log').scrollTop($('#debug_log')[0].scrollHeight);
             }
         })
     }
+
     var debugNextLineHandler = function($event, data){
         var obj = JSON.parse(data);
 
@@ -290,19 +289,18 @@ define(function (require, exports, module) {
             /*if(obj.message.BreakpointNumber)
              $('#debug_log').html($('#debug_log').html() + "<span style='color: mediumblue;'>" + "Line#" + obj.message.LineNumber + " - Code : " + obj.message.Code + " - Code : " + obj.message.Code + "</span><hr>");
              else*/
-            $('#debug_log').html($('#debug_log').html() + "<span style='color: mediumblue;'>" + "Line#" + obj.message.LineNumber + " - Code : " + obj.message.Code + "</span><hr>");
+            $('#debug_log').html($('#debug_log').html() + "<span style='color: #3232ff;'>" + "Line#" + obj.message.LineNumber + " - Code : " + obj.message.Code + "</span><hr>");
             $('#debug_log').scrollTop($('#debug_log')[0].scrollHeight);
         }
     }
+
     var debugRestoreHandler = function($event, data){
         codeMirror.removeLineClass(tmpLine, "background", "line-selected");
         var obj = JSON.parse(data);
 
-        $('#debug_log').html($('#debug_log').html() + "<span style='color: mediumblue;'>" + obj.message + "</span><hr>");
+        $('#debug_log').html($('#debug_log').html() + "<span style='color: #000066;'>" + obj.message + "</span><hr>");
         $('#debug_log').scrollTop($('#debug_log')[0].scrollHeight);
     }
-
-
 
 
 
@@ -352,8 +350,7 @@ define(function (require, exports, module) {
         }
     }
 
-    function bindButtonsEvents()
-    {
+    function bindButtonsEvents() {
         debugPanel.$panel.find("#haltsketchDebug_button").on("click",function(){
             debugDomain.exec("halt")
                 .done(function(){
@@ -440,10 +437,9 @@ define(function (require, exports, module) {
 
         debugPanelHTML = require("text!modules/Debug/html/Debug.html");
         debugPanel = WorkspaceManager.createBottomPanel("modules/Debug/html/debug.panel", $(debugPanelHTML));
-    };
+    }
 
-    function startDebug(filename, outdir)
-    {
+    function startDebug(filename, outdir) {
         debugDomain.exec("launchOpenOcd")
             .done(function (pid) {
                 if (pid > 1) {
