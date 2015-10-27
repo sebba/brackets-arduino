@@ -65,6 +65,8 @@ define(function (require, exports, module) {
         editor,
         codeMirror;
 
+    var tmpLine = 0;
+
     /**
      * [debug description]
      */
@@ -87,6 +89,14 @@ define(function (require, exports, module) {
         debugDomain.on('debug_data', debugDataHandler);
         debugDomain.on('debug_err', debugErrorHandler);
         debugDomain.on('close_flag', debugCloseHandler);
+
+        debugDomain.on('debug_data_set_bp', debugSetBpHandler);
+        debugDomain.on('debug_data_rem_bp', debugRemBpHandler);
+        debugDomain.on('debug_data_show_bp', debugShowBpHandler);
+        debugDomain.on('debug_data_next_bp', debugNextBpHandler);
+        debugDomain.on('debug_data_show_var', debugShowVarHandler);
+        debugDomain.on('debug_data_next_line', debugNextLineHandler);
+        debugDomain.on('debug_data_restore', debugRestoreHandler);
 
         brackets.arduino.dispatcher.on("arduino-event-debug-show",showDebug);
         brackets.arduino.dispatcher.on("arduino-event-debug-hide",hideDebug);
@@ -142,7 +152,6 @@ define(function (require, exports, module) {
                             })
 
                             codeMirror.addLineClass(line, null, "arduino-breakpoint");
-                            //codeMirror.addLineClass(line, null, "line-selected");
                             debugDomain.exec("set_breakpoint", DocumentManager.getCurrentDocument().file._name, line + 1)
                                 .done(function () {
                                     console.log("Breakpoint setted at " + DocumentManager.getCurrentDocument().file._name + " : " + (line + 1));
@@ -201,28 +210,101 @@ define(function (require, exports, module) {
     };
 
     var debugDataHandler = function($event, data){
-        if(data)
+        /*if(data)
         {
             if(data != "(gdb) ") {
-                $('#debug_log').html($('#debug_log').html() + "<span style='color: black;'>" + data.replace("(gdb)", "") + "</span><hr>");
+                $('#debug_log').html($('#debug_log').html() + "<span style='color: black;'>" + data.replace("(gdb)", "") + "</span>");
             }
             $('#debug_log').scrollTop($('#debug_log')[0].scrollHeight);
-        }
+        }*/
 
     };
 
     var debugErrorHandler = function($event, error){
         if(error){
             //brackets.arduino.dispatcher.trigger("arduino-event-debug-error", debugPrefix + " Error in debugging : " + error.toString());
-            if(error != "(gdb) ")
+            /*if(error != "(gdb) ")
                 $('#debug_log').html( $('#debug_log').html() + "<span style='color: red;'>" + error.replace("(gdb)","") + "</span><hr>");
-            $('#debug_log').scrollTop($('#debug_log')[0].scrollHeight);
+            $('#debug_log').scrollTop($('#debug_log')[0].scrollHeight);*/
         }
     }
 
     var debugCloseHandler = function($event){
         $('#debug_log').html('');
     }
+
+
+    var debugSetBpHandler = function($event, data){
+        var obj = JSON.parse(data);
+        $('#debug_log').html($('#debug_log').html() + "<span style='color: mediumblue;'>" + obj.message.Raw + "</span><hr>");
+        $('#debug_log').scrollTop($('#debug_log')[0].scrollHeight);
+    }
+    var debugRemBpHandler = function($event, data){
+        var obj = JSON.parse(data);
+        $('#debug_log').html($('#debug_log').html() + "<span style='color: mediumblue;'>" + obj.message.Raw + "</span><hr>");
+        $('#debug_log').scrollTop($('#debug_log')[0].scrollHeight);
+    }
+
+
+    var debugShowBpHandler = function($event, data){
+        var obj = JSON.parse(data);
+
+        obj.message.breakpoints.forEach(function(element, index, array) {
+            $('#debug_log').html($('#debug_log').html() + "<span style='color: mediumblue;'>" + "Breakpoint #" + element.Num + " - Row " + element.Row + "\nAddress : " + element.Address + "</span><hr>");
+            $('#debug_log').scrollTop($('#debug_log')[0].scrollHeight);
+        })
+    }
+
+
+
+    var debugNextBpHandler = function($event, data){
+        codeMirror.removeLineClass(tmpLine, "background", "line-selected");
+        var obj = JSON.parse(data);
+
+        tmpLine = obj.message.LineNumber -1;
+        codeMirror.addLineClass( obj.message.LineNumber-1, "background", "line-selected");
+        $('#debug_log').html($('#debug_log').html() + "<span style='color: mediumblue;'>" + "Breakpoint #" + obj.message.BreakpointNumber + " - Row " + obj.message.LineNumber + " - Code : " + obj.message.Code + "</span><hr>");
+        $('#debug_log').scrollTop($('#debug_log')[0].scrollHeight);
+    }
+
+
+    var debugShowVarHandler = function($event, data){
+        var obj = JSON.parse(data);
+
+        obj.message.variables.forEach(function(element, index, array) {
+            $('#debug_log').html($('#debug_log').html() + element + "</span><br>");
+
+            if(index == array.length-1) {
+                $('#debug_log').html($('#debug_log').html() + "<span style='color: mediumblue;'></span><hr>");
+                $('#debug_log').scrollTop($('#debug_log')[0].scrollHeight);
+            }
+        })
+    }
+    var debugNextLineHandler = function($event, data){
+        var obj = JSON.parse(data);
+
+        if(obj.message.LineNumber != null) {
+            codeMirror.removeLineClass(tmpLine, "background", "line-selected");
+            tmpLine = obj.message.LineNumber - 1;
+            codeMirror.addLineClass(obj.message.LineNumber - 1, "background", "line-selected");
+            /*if(obj.message.BreakpointNumber)
+             $('#debug_log').html($('#debug_log').html() + "<span style='color: mediumblue;'>" + "Line#" + obj.message.LineNumber + " - Code : " + obj.message.Code + " - Code : " + obj.message.Code + "</span><hr>");
+             else*/
+            $('#debug_log').html($('#debug_log').html() + "<span style='color: mediumblue;'>" + "Line#" + obj.message.LineNumber + " - Code : " + obj.message.Code + "</span><hr>");
+            $('#debug_log').scrollTop($('#debug_log')[0].scrollHeight);
+        }
+    }
+    var debugRestoreHandler = function($event, data){
+        codeMirror.removeLineClass(tmpLine, "background", "line-selected");
+        var obj = JSON.parse(data);
+
+        $('#debug_log').html($('#debug_log').html() + "<span style='color: mediumblue;'>" + obj.message + "</span><hr>");
+        $('#debug_log').scrollTop($('#debug_log')[0].scrollHeight);
+    }
+
+
+
+
 
     var sketchUploaded = function($event, directory){
         startDebug(DocumentManager.getCurrentDocument().file._name.replace('.ino',''), directory);
@@ -260,6 +342,7 @@ define(function (require, exports, module) {
                     $('#debugOptions > a' ).each( function(){
                         $(this).attr('disabled',true);
                         $(this).unbind('click')
+                        $('div').removeClass('line-selected');
                     });
                 })
                 .fail(function(err)
@@ -282,14 +365,14 @@ define(function (require, exports, module) {
                 })
         });
 
-        debugPanel.$panel.find("#restartsketchDebug_button").on("click",function(){
-            debugDomain.exec("restart")
+        debugPanel.$panel.find("#restoresketchDebug_button").on("click",function(){
+            debugDomain.exec("restore")
                 .done(function(){
-                    console.log("Restart execution")
+                    console.log("Restore execution")
                 })
                 .fail(function(err)
                 {
-                    console.log("Error in restart execution")
+                    console.log("Error in restore execution")
                 })
         });
 
@@ -379,6 +462,8 @@ define(function (require, exports, module) {
                             });
                             bindButtonsEvents();
 
+                            $('#debug_log').html("<span style='color: limegreen; font-weight: bold; font-size: large; padding: 40%'> Debug session started! </span><hr>");
+
                         })
                         .fail(function (err) {
                             console.log("Error in gdb launch")
@@ -389,3 +474,6 @@ define(function (require, exports, module) {
 
     return Debug;
 });
+
+
+//TODO delete halt button (html & css)
