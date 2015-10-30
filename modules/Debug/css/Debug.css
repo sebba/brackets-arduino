@@ -173,3 +173,99 @@ hr{
     opacity: 0.7;
 }
 
+
+
+
+
+
+/************************************/
+#debug_variables_values {
+    background-color    : rgba(0, 255, 163, 0.4);
+    width               : 40%;
+    height              : 100%;
+    min-height          : 100px;
+    float               : left;
+    margin-right        : 30px;
+    margin-bottom       : 20px;
+    margin-top          : 20px;
+    border              : 3px solid #969696;
+    border-radius       : 10px;
+    padding             : 10px 10px;
+}
+
+#debug_info_line {
+    background-color    : rgba(255, 0, 0, 0.4);
+    width               : 40%;
+    height              : 100%;
+    min-height          : 100px;
+    float               : left;
+    margin-top          : 20px;
+    border              : 3px solid #ff0808;
+    border-radius       : 10px;
+    padding             : 10px 10px;
+}
+
+#debug_info_bp {
+    background-color    : rgba(255, 245, 0, 0.4);
+    width               : 40%;
+    height              : 100%;
+    min-height          : 100px;
+    float               : left;
+    margin-right        : 30px;
+    margin-bottom       : 20px;
+    margin-top          : 20px;
+    border              : 3px solid #62cfff;
+    border-radius       : 10px;
+    padding             : 10px 10px;
+}
+
+.debugButton {
+    margin              : 5px;
+}
+
+#debug_buttons{
+    float               : right;
+    width               : 100%;
+}
+
+hr {
+    margin-top: -1px;
+    margin-bottom: -1px;
+    border-top-color: #000000;
+    opacity: 0.4;
+}
+
+p {
+    margin : 10px;
+}
+
+#debug_button_next_bp{
+    background: url('continue.png') center no-repeat;
+    cursor:pointer;
+    width: 35px;
+    height: 35px;
+    padding: 0px;
+    background-size: 35px;
+}
+
+#debug_button_next_line{
+    background: url('step.png') center no-repeat;
+    cursor:pointer;
+    width: 35px;
+    height: 35px;
+    padding: 0px;
+    background-size: 35px;
+}
+
+#debug_button_restore{
+    background: url('restart.png') center no-repeat;
+    cursor:pointer;
+    width: 35px;
+    height: 35px;
+    padding: 0px;
+    background-size: 35px;
+}
+
+.btn{
+    margin: 5px;
+}

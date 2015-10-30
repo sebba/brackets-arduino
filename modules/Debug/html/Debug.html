@@ -1,13 +1,20 @@
-<div id="debug" class="modal-bar">
-    <div id="debugOptions" class="form-inline" >
-        <a class="btn" id="haltsketchDebug_button" title="Stop execution" disabled="disabled" /> &nbsp; &nbsp; &nbsp;
-        <a class="btn" id="restoresketchDebug_button" title="Restore execution" disabled="disabled" /> &nbsp; &nbsp; &nbsp;
-        <a class="btn" id="continuesketchDebug_button" title="Next breakpoint" disabled="disabled" /> &nbsp; &nbsp; &nbsp;
-        <a class="btn" id="stepsketchDebug_button" title="Next line" disabled="disabled" /> &nbsp; &nbsp; &nbsp;
-        <!--a class="btn" id="setbreakpointDebug_button" title="Set breakpoints" disabled="disabled" /> &nbsp; &nbsp; &nbsp;-->
-        <a class="btn" id="showbreakpointDebug_button" title="Show breakpoints list" disabled="disabled" /> &nbsp; &nbsp; &nbsp;
-        <a class="btn" id="showvalueDebug_button" title="Show value" disabled="disabled" /> &nbsp; &nbsp; &nbsp;
+<div id="debug">
+    <div id="debug_buttons">
+        <!--button id="debug_button_next_bp" class="debugButton" disabled="disabled" />
+        <button id="debug_button_next_line" class="debugButton" disabled="disabled" />
+        <button id="debug_button_restore" class="debugButton" disabled="disabled" /-->
+
+        <a class="btn" id="debug_button_next_bp" class="debugButton" disabled="disabled" />
+        <a class="btn" id="debug_button_next_line" class="debugButton" disabled="disabled" />
+        <a class="btn" id="debug_button_restore" class="debugButton" disabled="disabled" />
+
     </div>
-    <!--label class="debug_label">Log</label-->
-    <div id="debug_log"></div>
+    <br />
+    <div id="debug_info">
+        <div id="debug_variables_values" ></div>
+        <div id="debug_info_line" ></div>
+        <br />
+        <div id="debug_info_bp"></div>
+
+    </div>
 </div>

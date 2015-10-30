@@ -273,7 +273,7 @@
 				else
 				{
 					try {
-						var mex = message.replace(/Num(.*)What/, "").replace("\n", " ").replace(/\r?\n|\r/g, " ").replace(/\s\s+/g, " ");
+						var mex = message.replace(/Num(.*)What/, "").replace (/breakpoint already hit \d times/, "###").replace("\n", " ").replace(/\r?\n|\r/g, " ").replace(/\s\s+/g, " ");
 						var mexArray = mex.split(" ");
 						mexArray.shift();
 						mexArray.pop();
@@ -288,11 +288,10 @@
 								"Address": mexArray[i + 4],
 								"What": mexArray[i + 6],
 								"File": mexArray[i + 8].substring(0, mexArray[i + 8].lastIndexOf(":")),
-								"Row": mexArray[i + 8].substring(mexArray[i + 8].lastIndexOf(":"))
+								"Row": mexArray[i + 8].substring(mexArray[i + 8].lastIndexOf(":")).replace(":","")
 							})
 							i += 9;
 						}
-						;
 					}
 					catch(err){
 						obj.err = err;
