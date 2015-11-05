@@ -118,7 +118,6 @@ define(function (require, exports, module) {
         brackets.arduino.dispatcher.trigger("arduino-event-console-clear");
 
         compilerDomain.exec("compile",options, sketch_dir , true);
-
     }
 
 
@@ -416,91 +415,6 @@ define(function (require, exports, module) {
 
 
     function bindButtonsEvents() {
-
-        /*
-        debugPanel.$panel.find("#haltsketchDebug_button").on("click",function(){
-            debugDomain.exec("halt")
-                .done(function(){
-                    console.log("Halt execution")
-                })
-                .fail(function(err)
-                {
-                    console.log("Error in halt execution")
-                })
-        });
-
-        debugPanel.$panel.find("#restoresketchDebug_button").on("click",function(){
-            debugDomain.exec("restore")
-                .done(function(){
-                    console.log("Restore execution")
-                })
-                .fail(function(err)
-                {
-                    console.log("Error in restore execution")
-                })
-        });
-
-        debugPanel.$panel.find("#continuesketchDebug_button").on("click",function(){
-            debugDomain.exec("step_next_bp")
-                .done(function(){
-                    console.log("Continue execution (next bp)")
-                })
-                .fail(function(err)
-                {
-                    console.log("Error")
-                })
-        });
-
-        debugPanel.$panel.find("#stepsketchDebug_button").on("click",function(){
-            debugDomain.exec("step_next_line")
-                .done(function(){
-                    console.log("Continue execution (next line)")
-                })
-                .fail(function(err)
-                {
-                    console.log("Error")
-                })
-        });
-
-        debugPanel.$panel.find("#showbreakpointDebug_button").on("click",function(){
-            debugDomain.exec("show_breakpoints")
-                .done(function(){
-                    console.log("List of breakpoints")
-                })
-                .fail(function(err)
-                {
-                    console.log("Error")
-                })
-        });
-
-        debugPanel.$panel.find("#setbreakpointDebug_button").on("click",function(){
-            var currentFileName = DocumentManager.getCurrentDocument().file.name.replace('.ino','.cpp');
-            for ( var i = 0 ; i < bp.length ; i++ ) {
-                var cur_bp = bp[i];
-                debugDomain.exec("set_breakpoint", currentFileName, cur_bp)
-                    .done(function () {
-                        console.log("Breakpoint setted at " + currentFileName + " : " + cur_bp);
-                    })
-                    .fail(function (err) {
-                        console.log("Error")
-                    })
-            }
-        });
-
-        debugPanel.$panel.find("#showvalueDebug_button").on("click",function(){
-            debugDomain.exec("show_variables")
-                .done(function(){
-                    console.log("Show variables" )
-                })
-                .fail(function(err)
-                {
-                    console.log("Error")
-                })
-        });
-
-        */
-
-
         debugPanel.$panel.find("#debug_button_next_bp").on("click",function(){
             debugDomain.exec("step_next_bp")
                 .done(function(){

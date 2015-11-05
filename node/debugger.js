@@ -45,30 +45,15 @@
 	var message_flag = '';
 	var tmp_obj_values = [];
 
-	function getTmpFolder()
-	{
-		return os.tmpdir();
-	}
+	function getTmpFolder() { return os.tmpdir(); }
 
-	function getOpenOcd()
-	{
-		return rootDir+((process.platform =='win32')? '\\hardware\\tools\\OpenOCD-0.9.0-arduino\\bin\\openocd' : '/hardware/tools/OpenOCD-0.9.0-arduino/bin/openocd')
-	}
+	function getOpenOcd() { return rootDir+((process.platform =='win32')? '\\hardware\\tools\\OpenOCD-0.9.0-arduino\\bin\\openocd' : '/hardware/tools/OpenOCD-0.9.0-arduino/bin/openocd') }
 
-	function getScriptDir()
-	{
-		return rootDir+((process.platform =='win32')? '\\hardware\\tools\\OpenOCD-0.9.0-arduino\\share\\openocd\\scripts' : '/hardware/tools/OpenOCD-0.9.0-arduino/share/openocd/scripts')
-	}
+	function getScriptDir() { return rootDir+((process.platform =='win32')? '\\hardware\\tools\\OpenOCD-0.9.0-arduino\\share\\openocd\\scripts' : '/hardware/tools/OpenOCD-0.9.0-arduino/share/openocd/scripts') }
 
-	function getScript()
-	{
-		return rootDir+((process.platform =='win32')? '\\hardware\\arduino\\samd\\variants\\arduino_zero\\openocd_scripts\\arduino_zero.cfg' : '/hardware/arduino/samd/variants/arduino_zero/openocd_scripts/arduino_zero.cfg')
-	}
+	function getScript() { return rootDir+((process.platform =='win32')? '\\hardware\\arduino\\samd\\variants\\arduino_zero\\openocd_scripts\\arduino_zero.cfg' : '/hardware/arduino/samd/variants/arduino_zero/openocd_scripts/arduino_zero.cfg') }
 
-	function getGdb()
-	{
-		return rootDir+((process.platform =='win32')? '\\hardware\\tools\\samd\\bin\\arm-none-eabi-gdb' : '/hardware/tools/samd/bin/arm-none-eabi-gdb')
-	}
+	function getGdb() { return rootDir+((process.platform =='win32')? '\\hardware\\tools\\samd\\bin\\arm-none-eabi-gdb' : '/hardware/tools/samd/bin/arm-none-eabi-gdb') }
 
 	function stopAll()
 	{
@@ -127,75 +112,65 @@
 			}, interval);
 	}
 
-	function locateElfFile(filepath)
-	{
+	function locateElfFile(filepath) {
 		console.log("--|| Locate elf file ||--")
 		gdbProcess.stdin.write("file " + filepath + " \n")
 		message_flag = "elf"
 		console.log("file " + filepath + " \n")
 	}
 
-	function locateLiveProgram()
-	{
+	function locateLiveProgram() {
 		console.log("--|| Locate live program ||--")
 		gdbProcess.stdin.write("target remote localhost:3333"+" \n")
 		message_flag = "live"
 		console.log("target remote localhost:3333"+" \n")
 	}
 
-	function stopExecution()
-	{
+	function stopExecution() {
 		console.log("--|| Stop sketch ||--")
 		gdbProcess.stdin.write(" monitor reset halt"+" \n")
 		message_flag = 'stop';
 		dManager.emitEvent(domainName, "debug_data", "Halt")
 	}
 
-	function restoreExecution()
-	{
+	function restoreExecution() {
 		console.log("--|| Restore sketch ||--")
 		gdbProcess.stdin.write(" monitor reset run"+" \n")
 		message_flag = 'restore';
 		dManager.emitEvent(domainName, "debug_data", "Resume")
 	}
 
-	function stepNextBp()
-	{
+	function stepNextBp() {
 		console.log("--|| Continue sketch execution ||--")
 		gdbProcess.stdin.write(" continue" + " \n")
 		message_flag = 'next_bp';
 	}
 
-	function stepNextLine()
-	{
+	function stepNextLine() {
 		console.log("--|| Step Next Line ||--")
 		gdbProcess.stdin.write(" next" + " \n")
 		message_flag = 'next_line';
 	}
 
-	function showBreakpoints()
-	{
+	function showBreakpoints() {
 		console.log("--|| Show a list of breakpoints ||--")
 		gdbProcess.stdin.write(" info breakpoints " + " \n")
 		message_flag = 'show_bp';
 	}
 
-	function setBreakpoint(filename, line)
-	{
+	function setBreakpoint(filename, line) {
 		console.log("--|| Set breakpoint at " + line + " ||--")
 		gdbProcess.stdin.write(" break " + filename +  ":" + line + " \n")
 		message_flag = 'set_bp';
 	}
 
-	function showVariables()
-	{
+	function showVariables() {
 		console.log("--|| Show variables ||--")
 		gdbProcess.stdin.write(" info locals" + " \n")
 		message_flag = 'show_var'
 	}
 
-	function saveBreakpoints(bpList, filename)
-	{
+	function saveBreakpoints(bpList, filename) {
 		console.log("--|| Save breakpoint on file ||--")
 		//gdbProcess.stdin.write("save breakpoints" + filename +" \n")
 		//or
@@ -208,8 +183,7 @@
 		})
 	}
 
-	function deleteBreakpoint(filename, line)
-	{
+	function deleteBreakpoint(filename, line) {
 		console.log("--|| Delete breakpoint at " + line + " ||--")
 		message_flag = 'rem_bp';
 		gdbProcess.stdin.write("clear " + filename +  ":" + line + " \n")
@@ -273,7 +247,7 @@
 				else
 				{
 					try {
-						var mex = message.replace(/Num(.*)What/, "").replace (/breakpoint already hit \d times/, "###").replace("\n", " ").replace(/\r?\n|\r/g, " ").replace(/\s\s+/g, " ");
+						var mex = message.replace(/Num(.*)What/, "").replace (/breakpoint already hit \d times/, "").replace("\n", " ").replace(/\r?\n|\r/g, " ").replace(/\s\s+/g, " ");
 						var mexArray = mex.split(" ");
 						mexArray.shift();
 						mexArray.pop();
